@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Discrete Probability Distributions</title>
+<style>
+  :root { --ink:#172033; --muted:#697386; --line:#e4e8f0; --bg:#f6f8fc; --primary:#465cf5; --primary-dark:#3548d7; --pale:#eef0ff; --white:#fff; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+  header { background:#fff; border-bottom:1px solid var(--line); position:sticky; top:0; z-index:5; }
+  .nav-wrap { max-width:1120px; margin:auto; min-height:72px; padding:0 24px; display:flex; align-items:center; justify-content:space-between; gap:24px; }
+  .brand { display:flex; align-items:center; gap:12px; font-weight:750; letter-spacing:-.3px; white-space:nowrap; }
+  .brand-mark { width:38px; height:38px; display:grid; place-items:center; border-radius:12px; background:var(--pale); color:var(--primary); font-size:20px; font-weight:800; }
+  nav { display:flex; flex-wrap:wrap; gap:6px; }
+  nav button { border:0; background:transparent; color:var(--muted); border-radius:10px; padding:11px 14px; font:inherit; font-size:14px; font-weight:650; cursor:pointer; }
+  nav button:hover { background:#f4f5fb; color:var(--ink); }
+  nav button.active { background:var(--pale); color:var(--primary); }
+  main { max-width:1120px; margin:0 auto; padding:44px 24px 64px; }
+  .eyebrow { color:var(--primary); text-transform:uppercase; letter-spacing:1.4px; font-size:11px; font-weight:800; margin:0 0 12px; }
+  h1 { margin:0; font-size:clamp(30px,4vw,42px); line-height:1.15; letter-spacing:-1.4px; }
+  .intro { color:var(--muted); max-width:670px; margin:14px 0 30px; line-height:1.7; font-size:15px; }
+  .hero { padding:34px; background:linear-gradient(120deg,#fff 0%,#f0f2ff 100%); border:1px solid var(--line); border-radius:22px; margin-bottom:26px; }
+  .hero p { color:var(--muted); line-height:1.7; max-width:660px; margin:14px 0 0; }
+  .section-title { font-size:19px; letter-spacing:-.4px; margin:0 0 14px; }
+  .module-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
+  .module-card { text-align:left; background:#fff; border:1px solid var(--line); padding:22px; border-radius:16px; cursor:pointer; transition:transform .15s,border-color .15s; color:var(--ink); font:inherit; }
+  .module-card:hover { transform:translateY(-2px); border-color:#aeb8ff; }
+  .module-card h3 { margin:14px 0 8px; font-size:16px; }
+  .module-card p { margin:0; color:var(--muted); font-size:13px; line-height:1.6; }
+  .mini-icon { display:grid; place-items:center; width:42px; height:42px; border-radius:13px; background:var(--pale); color:var(--primary); font-weight:800; font-size:18px; }
+  .tag { display:inline-block; margin-top:15px; padding:5px 8px; border-radius:7px; font-size:11px; font-weight:750; color:#536071; background:#f1f3f7; }
+  .layout { display:grid; grid-template-columns:minmax(0,1fr) minmax(280px,.8fr); gap:20px; align-items:start; }
+  .panel { background:var(--white); border:1px solid var(--line); border-radius:18px; padding:25px; box-shadow:0 3px 12px rgba(24,35,65,.025); }
+  .panel h2 { font-size:18px; margin:0 0 8px; letter-spacing:-.4px; }
+  .subtext { color:var(--muted); font-size:13px; line-height:1.6; margin:0 0 22px; }
+  .fields { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+  label { display:block; font-size:13px; font-weight:700; margin-bottom:8px; }
+  input { width:100%; border:1px solid #d9deea; background:#fff; border-radius:10px; padding:12px 13px; color:var(--ink); font:inherit; font-size:14px; outline:none; }
+  input:focus { border-color:var(--primary); box-shadow:0 0 0 3px rgba(70,92,245,.12); }
+  .hint { color:var(--muted); font-size:11px; margin-top:7px; }
+  .primary { width:100%; border:0; border-radius:10px; background:var(--primary); color:white; font:inherit; font-weight:750; padding:13px 16px; margin-top:22px; cursor:pointer; }
+  .primary:hover { background:var(--primary-dark); }
+  .error { display:none; margin-top:12px; padding:11px 13px; border-radius:9px; background:#fff0f0; color:#ae3030; font-size:13px; }
+  .formula { background:#f7f8ff; border:1px solid #e7e9ff; border-radius:13px; padding:17px; margin-top:16px; line-height:1.8; }
+  .formula-main { font-size:20px; font-family:Georgia,serif; text-align:center; margin:5px 0 7px; }
+  .formula small { color:var(--muted); font-size:12px; }
+  .result-top { background:#f3f4ff; border:1px solid #e1e4ff; padding:20px; border-radius:14px; }
+  .result-label { color:var(--muted); font-size:12px; font-weight:700; }
+  .result-value { font-size:30px; letter-spacing:-.8px; font-weight:800; color:var(--primary); margin:7px 0 3px; overflow-wrap:anywhere; }
+  .result-caption { color:var(--muted); font-size:12px; }
+  .stats { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin-top:16px; }
+  .stat { border:1px solid var(--line); border-radius:12px; padding:17px; background:#fff; min-width:0; }
+  .stat span { display:block; color:var(--muted); font-size:12px; line-height:1.45; margin-bottom:9px; }
+  .stat strong { display:block; font-size:22px; letter-spacing:-.5px; overflow-wrap:anywhere; }
+  .statistics-panel { margin-top:20px; }
+  .pmf-panel, .cdf-panel { margin-top:20px; }
+  .pmf-result { margin-top:18px; }
+  .chart-panel { margin-top:20px; }
+  .chart-frame { position:relative; width:100%; overflow:hidden; border:1px solid var(--line); border-radius:13px; background:#fff; }
+  #pmfChartCanvas, .module-chart-canvas { display:block; width:100%; height:360px; touch-action:pan-y; }
+  .chart-tooltip { display:none; position:absolute; z-index:2; max-width:230px; padding:10px 12px; border-radius:9px; background:#172033; color:#fff; font-size:12px; line-height:1.6; box-shadow:0 5px 18px rgba(0,0,0,.15); pointer-events:none; white-space:nowrap; }
+  .chart-legend { display:flex; flex-wrap:wrap; gap:18px; align-items:center; margin-top:14px; color:var(--muted); font-size:12px; }
+  .legend-item { display:inline-flex; align-items:center; gap:8px; }
+  .legend-swatch { display:inline-block; width:18px; height:10px; border-radius:3px; background:var(--primary); }
+  .legend-line { display:inline-block; width:22px; height:0; border-top:2px dashed #d35444; }
+  .plain-explanation { color:var(--muted); font-size:13px; line-height:1.65; margin:12px 0 0; }
+  .cdf-results { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; margin-top:18px; }
+  .cdf-result { background:#f3f4ff; border:1px solid #e1e4ff; padding:18px; border-radius:14px; min-width:0; }
+  .cdf-result .result-value { font-size:clamp(22px,3vw,30px); }
+  @media(max-width:520px) { .cdf-results { grid-template-columns:1fr; } }
+  .stat-formula { color:var(--muted); font-size:11px; margin-top:7px; }
+  @media(max-width:760px) { .stats { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+  @media(max-width:420px) { .stats { grid-template-columns:1fr; } }
+  .note { margin-top:18px; color:var(--muted); font-size:12px; line-height:1.65; }
+  .coming { padding:40px; text-align:center; border:1px dashed #cfd5e3; border-radius:18px; background:#fff; }
+  .coming .mini-icon { margin:0 auto 18px; }
+  .coming p { color:var(--muted); line-height:1.7; max-width:460px; margin:10px auto 0; }
+  footer { text-align:center; padding:22px 16px; border-top:1px solid var(--line); color:var(--muted); font-size:12px; }
+  @media(max-width:760px) { .nav-wrap { padding:12px 16px; align-items:flex-start; flex-direction:column; gap:10px; } nav { width:100%; } nav button { padding:9px 11px; } main { padding:28px 16px 44px; } .hero { padding:25px; } .module-grid,.layout { grid-template-columns:1fr; } .panel { padding:20px; } }
+  @media(max-width:420px) { .fields { grid-template-columns:1fr; } .brand { font-size:14px; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="nav-wrap">
+    <div class="brand"><div class="brand-mark">∑</div><span>Discrete Probability Distributions</span></div>
+    <nav aria-label="Main navigation">
+      <button class="active" data-page="home">Home</button>
+      <button data-page="binomial">Binomial</button>
+      <button data-page="poisson">Poisson</button>
+      <button data-page="geometric">Geometric</button>
+    </nav>
+  </div>
+</header>
+<main id="app"></main>
+<footer>Undergraduate AIML Laboratory · Discrete Probability Distributions</footer>
+<script>
+const app = document.getElementById('app');
+const navButtons = [...document.querySelectorAll('nav button')];
+
+function renderHome() {
+  app.innerHTML = `
+    <section class="hero">
+      <p class="eyebrow">AIML Laboratory · Probability & Statistics</p>
+      <h1>Discrete Probability<br>Distributions</h1>
+      <p>Explore how probabilities are assigned to countable outcomes. Select a distribution to learn its purpose and work through probability calculations.</p>
+    </section>
+    <h2 class="section-title">Distribution modules</h2>
+    <div class="module-grid">
+      <button class="module-card" data-open="binomial"><span class="mini-icon">B</span><h3>Binomial Distribution</h3><p>Model the number of successes in a fixed number of independent trials.</p><span class="tag">Available now</span></button>
+      <button class="module-card" data-open="poisson"><span class="mini-icon">P</span><h3>Poisson Distribution</h3><p>Explore counts of events occurring within a fixed interval.</p><span class="tag">Interactive module</span></button>
+      <button class="module-card" data-open="geometric"><span class="mini-icon">G</span><h3>Geometric Distribution</h3><p>Study the number of trials needed to get the first success.</p><span class="tag">Interactive module</span></button>
+    </div>`;
+}
+function renderBinomial() {
+  app.innerHTML = `
+    <p class="eyebrow">Distribution module / 01</p>
+    <h1>Binomial Distribution</h1>
+    <p class="intro">Set the number of independent trials and the probability of success for each trial. The key Binomial Distribution statistics update automatically when you change either parameter.</p>
+    <div class="layout">
+      <section class="panel">
+        <h2>Binomial parameters</h2>
+        <p class="subtext">Enter the two parameters for the distribution. Values are checked as you type.</p>
+        <div class="fields">
+          <div>
+            <label for="n">Number of trials (n)</label>
+            <input id="n" type="number" min="1" step="1" value="20" inputmode="numeric" aria-describedby="nhint">
+            <div class="hint" id="nhint">Must be a positive integer.</div>
+          </div>
+          <div>
+            <label for="p">Probability of success (p)</label>
+            <input id="p" type="number" min="0" max="1" step="any" value="0.35" aria-describedby="phint">
+            <div class="hint" id="phint">Must be between 0 and 1, inclusive.</div>
+          </div>
+        </div>
+        <div class="error" id="error" role="alert" aria-live="polite"></div>
+      </section>
+      <aside class="panel" aria-live="polite">
+        <h2>Selected values</h2>
+        <p class="subtext">These are the current parameters for your Binomial Distribution.</p>
+        <div class="result-top">
+          <div class="result-label">Number of trials (n)</div>
+          <div class="result-value" id="selectedN">20</div>
+          <div class="result-caption">Positive whole number</div>
+        </div>
+        <div class="result-top" style="margin-top:14px">
+          <div class="result-label">Probability of success (p)</div>
+          <div class="result-value" id="selectedP">0.35</div>
+          <div class="result-caption">Value from 0 to 1</div>
+        </div>
+        <p class="note">Statistics below use the currently selected values of n and p.</p>
+      </aside>
+    </div>
+
+    <section class="panel statistics-panel" aria-live="polite" aria-labelledby="statisticsHeading">
+      <h2 id="statisticsHeading">Binomial statistics</h2>
+      <p class="subtext">Calculated from the selected number of trials and probability of success.</p>
+      <div class="stats">
+        <div class="stat"><span>Mean (np)</span><strong id="meanValue">—</strong><div class="stat-formula">μ = np</div></div>
+        <div class="stat"><span>Variance</span><strong id="varianceValue">—</strong><div class="stat-formula">σ² = np(1 − p)</div></div>
+        <div class="stat"><span>Standard deviation</span><strong id="stdDevValue">—</strong><div class="stat-formula">σ = √variance</div></div>
+        <div class="stat"><span>Second moment E[X²]</span><strong id="secondMomentValue">—</strong><div class="stat-formula">E[X²] = variance + mean²</div></div>
+        <div class="stat"><span>Skewness</span><strong id="skewnessValue">—</strong><div class="stat-formula">γ₁ = (1 − 2p) / √(np(1 − p))</div></div>
+      </div>
+      <p class="note" id="statisticsNote">Results are shown to at most 4 decimal places. Skewness is undefined when the variance is zero (p = 0 or p = 1).</p>
+    </section>
+
+    <section class="panel pmf-panel" aria-live="polite" aria-labelledby="pmfHeading">
+      <h2 id="pmfHeading">Binomial PMF calculator</h2>
+      <p class="subtext">Find the probability of getting exactly k successes using the current values of n and p.</p>
+      <div class="fields">
+        <div>
+          <label for="k">Number of successes (k)</label>
+          <input id="k" type="number" min="0" step="1" value="7" inputmode="numeric" aria-describedby="khint">
+          <div class="hint" id="khint">Enter a whole number from 0 to n.</div>
+        </div>
+        <div>
+          <label>Distribution</label>
+          <div style="padding:12px 13px;border:1px solid var(--line);border-radius:10px;background:#f8f9fd;font-size:14px;min-height:44px">X ~ Binomial(n, p)</div>
+          <div class="hint">Uses the parameters selected above.</div>
+        </div>
+      </div>
+      <div class="error" id="pmfError" role="alert" aria-live="polite"></div>
+      <div class="formula">
+        <small>Probability mass function (PMF)</small>
+        <div class="formula-main">P(X = k) = C(n, k) p<sup>k</sup> (1 − p)<sup>n − k</sup></div>
+        <small id="substitution">P(X = 7) = C(20, 7) × 0.35⁷ × (1 − 0.35)¹³</small>
+      </div>
+      <div class="result-top pmf-result">
+        <div class="result-label">Probability of exactly <span id="resultK">7</span> successes</div>
+        <div class="result-value" id="pmfValue">—</div>
+        <div class="result-caption" id="pmfPercent">—</div>
+      </div>
+      <p class="plain-explanation">This result is the chance of getting exactly k successes in n independent trials when each trial has success probability p.</p>
+    </section>
+
+    <section class="panel cdf-panel" aria-live="polite" aria-labelledby="cdfHeading">
+      <h2 id="cdfHeading">Binomial CDF calculator</h2>
+      <p class="subtext">Find the probability of getting k or fewer successes, and the probability of getting more than k successes.</p>
+      <div class="fields">
+        <div>
+          <label for="cdfK">Number of successes (k)</label>
+          <input id="cdfK" type="number" min="0" step="1" value="7" inputmode="numeric" aria-describedby="cdfKhint">
+          <div class="hint" id="cdfKhint">Enter a whole number from 0 to n.</div>
+        </div>
+        <div>
+          <label>Distribution</label>
+          <div style="padding:12px 13px;border:1px solid var(--line);border-radius:10px;background:#f8f9fd;font-size:14px;min-height:44px">X ~ Binomial(n, p)</div>
+          <div class="hint">Uses the parameters selected above.</div>
+        </div>
+      </div>
+      <div class="error" id="cdfError" role="alert" aria-live="polite"></div>
+      <div class="cdf-results">
+        <div class="cdf-result">
+          <div class="result-label">Cumulative probability · P(X ≤ k)</div>
+          <div class="result-value" id="cdfValue">—</div>
+          <div class="result-caption" id="cdfPercent">—</div>
+        </div>
+        <div class="cdf-result">
+          <div class="result-label">Complementary probability · P(X &gt; k)</div>
+          <div class="result-value" id="survivalValue">—</div>
+          <div class="result-caption" id="survivalPercent">—</div>
+        </div>
+      </div>
+      <div class="formula">
+        <small>Cumulative distribution function (CDF)</small>
+        <div class="formula-main">P(X ≤ k) = Σ<sub>i=0</sub><sup>k</sup> P(X = i)</div>
+        <div class="formula-main">P(X &gt; k) = 1 − P(X ≤ k)</div>
+      </div>
+      <p class="plain-explanation">P(X ≤ k) means the probability of getting k or fewer successes.</p>
+    </section>
+
+    <section class="panel chart-panel" aria-labelledby="pmfChartHeading">
+      <h2 id="pmfChartHeading">Binomial PMF graph</h2>
+      <p class="subtext">The bar chart shows P(X = x) for every possible number of successes, X = 0, 1, 2, ..., n. It updates automatically when n or p changes.</p>
+      <div class="chart-frame" id="pmfChartFrame">
+        <canvas id="pmfChartCanvas" role="img" aria-label="Bar chart of the Binomial probability mass function, with a dashed vertical line marking the mean."></canvas>
+        <div class="chart-tooltip" id="pmfChartTooltip" role="status" aria-live="polite"></div>
+      </div>
+      <div class="chart-legend" aria-label="Chart legend">
+        <span class="legend-item"><span class="legend-swatch" aria-hidden="true"></span>Binomial PMF, P(X)</span>
+        <span class="legend-item"><span class="legend-line" aria-hidden="true"></span>Mean, μ = np</span>
+      </div>
+      <p class="plain-explanation" id="pmfChartNote">Move your pointer over a bar to see X and its probability. The dashed line marks the mean number of successes.</p>
+      <div class="error" id="pmfChartError" role="alert" aria-live="polite"></div>
+    </section>`;
+
+  const nInput = document.getElementById('n');
+  const pInput = document.getElementById('p');
+  const kInput = document.getElementById('k');
+  const cdfKInput = document.getElementById('cdfK');
+  const error = document.getElementById('error');
+  const pmfError = document.getElementById('pmfError');
+  const cdfError = document.getElementById('cdfError');
+  const pmfChartCanvas = document.getElementById('pmfChartCanvas');
+  const pmfChartFrame = document.getElementById('pmfChartFrame');
+  const pmfChartTooltip = document.getElementById('pmfChartTooltip');
+  const pmfChartNote = document.getElementById('pmfChartNote');
+  const pmfChartError = document.getElementById('pmfChartError');
+  let pmfChartState = { valid: false, n: 20, p: 0.35, probabilities: [], plot: null };
+
+  function validateAndUpdate() {
+    const nRaw = nInput.value.trim();
+    const pRaw = pInput.value.trim();
+    const n = Number(nRaw);
+    const p = Number(pRaw);
+    const nValid = nRaw !== '' && Number.isFinite(n) && Number.isInteger(n) && n >= 1;
+    const pValid = pRaw !== '' && Number.isFinite(p) && p >= 0 && p <= 1;
+
+    const kRaw = kInput.value.trim();
+    const k = Number(kRaw);
+    const kValid = kRaw !== '' && Number.isFinite(k) && Number.isInteger(k) && k >= 0 && nValid && k <= n;
+    const cdfKRaw = cdfKInput.value.trim();
+    const cdfK = Number(cdfKRaw);
+    const cdfKValid = cdfKRaw !== '' && Number.isFinite(cdfK) && Number.isInteger(cdfK) && cdfK >= 0 && nValid && cdfK <= n;
+
+    nInput.setAttribute('aria-invalid', String(!nValid));
+    pInput.setAttribute('aria-invalid', String(!pValid));
+    kInput.setAttribute('aria-invalid', String(!kValid));
+    cdfKInput.setAttribute('aria-invalid', String(!cdfKValid));
+    if (nValid) {
+      kInput.max = String(n);
+      cdfKInput.max = String(n);
+    }
+    document.getElementById('selectedN').textContent = nValid ? String(n) : '—';
+    document.getElementById('selectedP').textContent = pValid ? String(p) : '—';
+
+    const statisticIds = ['meanValue', 'varianceValue', 'stdDevValue', 'secondMomentValue', 'skewnessValue'];
+    if (nValid && pValid) {
+      const mean = n * p;
+      const variance = n * p * (1 - p);
+      const standardDeviation = Math.sqrt(variance);
+      const secondMoment = variance + mean * mean;
+      const skewness = variance === 0 ? null : (1 - 2 * p) / standardDeviation;
+      const formatNumber = value => Number(value.toFixed(4)).toString();
+
+      document.getElementById('meanValue').textContent = formatNumber(mean);
+      document.getElementById('varianceValue').textContent = formatNumber(variance);
+      document.getElementById('stdDevValue').textContent = formatNumber(standardDeviation);
+      document.getElementById('secondMomentValue').textContent = formatNumber(secondMoment);
+      document.getElementById('skewnessValue').textContent = skewness === null ? 'Undefined' : formatNumber(skewness);
+      document.getElementById('statisticsNote').textContent = variance === 0
+        ? 'Results are shown to at most 4 decimal places. Skewness is undefined when p = 0 or p = 1 because the variance is zero.'
+        : 'Results are shown to at most 4 decimal places. Skewness is calculated using (1 − 2p) / √(np(1 − p)).';
+    } else {
+      statisticIds.forEach(id => document.getElementById(id).textContent = '—');
+      document.getElementById('statisticsNote').textContent = 'Enter valid values for n and p to calculate the statistics. Skewness is undefined when the variance is zero (p = 0 or p = 1).';
+    }
+
+    const messages = [];
+    if (!nValid) messages.push('Number of trials n must be a positive integer.');
+    if (!pValid) messages.push('Probability of success p must be between 0 and 1, inclusive.');
+    if (messages.length) {
+      error.textContent = messages.join(' ');
+      error.style.display = 'block';
+    } else {
+      error.textContent = '';
+      error.style.display = 'none';
+    }
+
+    updatePMF({ n, p, nValid, pValid, k, kValid });
+    updateCDF({ n, p, nValid, pValid, k: cdfK, kValid: cdfKValid });
+    drawPMFChart();
+  }
+
+  function binomialPMF(n, p, k) {
+    if (p === 0) return k === 0 ? 1 : 0;
+    if (p === 1) return k === n ? 1 : 0;
+
+    // Log-gamma keeps combinations numerically stable without calculating huge factorials.
+    function logGamma(z) {
+      const coefficients = [
+        676.5203681218851, -1259.1392167224028, 771.32342877765313,
+        -176.61502916214059, 12.507343278686905, -0.13857109526572012,
+        9.9843695780195716e-6, 1.5056327351493116e-7
+      ];
+      if (z < 0.5) return Math.log(Math.PI) - Math.log(Math.sin(Math.PI * z)) - logGamma(1 - z);
+      z -= 1;
+      let x = 0.99999999999980993;
+      for (let i = 0; i < coefficients.length; i++) x += coefficients[i] / (z + i + 1);
+      const t = z + coefficients.length - 0.5;
+      return 0.5 * Math.log(2 * Math.PI) + (z + 0.5) * Math.log(t) - t + Math.log(x);
+    }
+    const logCombination = logGamma(n + 1) - logGamma(k + 1) - logGamma(n - k + 1);
+    const logProbability = logCombination + k * Math.log(p) + (n - k) * Math.log1p(-p);
+    return Math.exp(logProbability);
+  }
+
+  function updatePMF({ n, p, nValid, pValid, k, kValid }) {
+    const result = document.getElementById('pmfValue');
+    const percent = document.getElementById('pmfPercent');
+    const substitution = document.getElementById('substitution');
+    const resultK = document.getElementById('resultK');
+    const messages = [];
+    if (!nValid) messages.push('Enter a valid positive integer for n before calculating the PMF.');
+    if (!pValid) messages.push('Enter a probability p between 0 and 1, inclusive.');
+    if (!kValid) messages.push('Number of successes k must be an integer between 0 and n, inclusive.');
+
+    if (messages.length) {
+      pmfError.textContent = messages.join(' ');
+      pmfError.style.display = 'block';
+      result.textContent = '—';
+      percent.textContent = 'Enter valid n, p, and k values.';
+      substitution.textContent = 'P(X = k) = C(n, k) × pᵏ × (1 − p)ⁿ⁻ᵏ';
+      resultK.textContent = kRawSafeDisplay(kInput.value);
+      return;
+    }
+
+    pmfError.textContent = '';
+    pmfError.style.display = 'none';
+    const probability = binomialPMF(n, p, k);
+    const displayProbability = probability === 0
+      ? '0'
+      : probability < 0.0000001 || probability >= 1e10
+        ? probability.toExponential(6)
+        : Number(probability.toPrecision(8)).toString();
+    result.textContent = displayProbability;
+    percent.textContent = `${(probability * 100).toPrecision(6).replace(/\.?0+$/, '')}% probability`;
+    resultK.textContent = String(k);
+    substitution.textContent = `P(X = ${k}) = C(${n}, ${k}) × ${p}^${k} × (1 − ${p})^${n - k}`;
+  }
+
+  function kRawSafeDisplay(value) {
+    return value.trim() === '' ? 'k' : value;
+  }
+
+  function updateCDF({ n, p, nValid, pValid, k, kValid }) {
+    const cdfValue = document.getElementById('cdfValue');
+    const cdfPercent = document.getElementById('cdfPercent');
+    const survivalValue = document.getElementById('survivalValue');
+    const survivalPercent = document.getElementById('survivalPercent');
+    const messages = [];
+    if (!nValid) messages.push('Enter a valid positive integer for n before calculating the CDF.');
+    if (!pValid) messages.push('Enter a probability p between 0 and 1, inclusive.');
+    if (!kValid) messages.push('CDF value k must be an integer between 0 and n, inclusive.');
+
+    if (messages.length) {
+      cdfError.textContent = messages.join(' ');
+      cdfError.style.display = 'block';
+      cdfValue.textContent = '—';
+      cdfPercent.textContent = 'Enter valid n, p, and k values.';
+      survivalValue.textContent = '—';
+      survivalPercent.textContent = 'Enter valid n, p, and k values.';
+      return;
+    }
+
+    cdfError.textContent = '';
+    cdfError.style.display = 'none';
+
+    // Sum P(X = i) for i = 0..k, then use the complement for P(X > k).
+    // Use compensated summation to reduce floating-point rounding error.
+    let cumulative = 0;
+    let compensation = 0;
+    for (let i = 0; i <= k; i++) {
+      const probability = binomialPMF(n, p, i);
+      const adjusted = probability - compensation;
+      const next = cumulative + adjusted;
+      compensation = (next - cumulative) - adjusted;
+      cumulative = next;
+    }
+    cumulative = Math.min(1, Math.max(0, cumulative));
+    const upperTail = Math.min(1, Math.max(0, 1 - cumulative));
+    const formatProbability = value => value === 0 ? '0' : Number(value.toPrecision(8)).toString();
+    const formatPercent = value => `${Number((value * 100).toPrecision(6)).toString()}% probability`;
+
+    cdfValue.textContent = formatProbability(cumulative);
+    cdfPercent.textContent = formatPercent(cumulative);
+    survivalValue.textContent = formatProbability(upperTail);
+    survivalPercent.textContent = formatPercent(upperTail);
+  }
+
+  function buildBinomialSeries(n, p) {
+    const probabilities = new Array(n + 1).fill(0);
+    if (p === 0) {
+      probabilities[0] = 1;
+      return probabilities;
+    }
+    if (p === 1) {
+      probabilities[n] = 1;
+      return probabilities;
+    }
+
+    // Start at the mode to avoid underflow from starting at P(X = 0) for large n.
+    const mode = Math.min(n, Math.floor((n + 1) * p));
+    probabilities[mode] = binomialPMF(n, p, mode);
+    for (let x = mode; x < n; x++) {
+      probabilities[x + 1] = probabilities[x] * ((n - x) / (x + 1)) * (p / (1 - p));
+    }
+    for (let x = mode; x > 0; x--) {
+      probabilities[x - 1] = probabilities[x] * (x / (n - x + 1)) * ((1 - p) / p);
+    }
+
+    // Normalize away small floating-point drift so the plotted mass totals approximately one.
+    const total = probabilities.reduce((sum, value) => sum + value, 0);
+    if (Number.isFinite(total) && total > 0) {
+      for (let x = 0; x <= n; x++) probabilities[x] /= total;
+    }
+    return probabilities;
+  }
+
+  function drawPMFChart() {
+    const nRaw = nInput.value.trim();
+    const pRaw = pInput.value.trim();
+    const n = Number(nRaw);
+    const p = Number(pRaw);
+    const nValid = nRaw !== '' && Number.isFinite(n) && Number.isInteger(n) && n >= 1;
+    const pValid = pRaw !== '' && Number.isFinite(p) && p >= 0 && p <= 1;
+    const rect = pmfChartCanvas.getBoundingClientRect();
+    const width = Math.max(280, Math.round(rect.width || pmfChartFrame.clientWidth || 640));
+    const height = 360;
+    const dpr = Math.max(1, window.devicePixelRatio || 1);
+
+    pmfChartCanvas.width = Math.round(width * dpr);
+    pmfChartCanvas.height = Math.round(height * dpr);
+    pmfChartCanvas.style.height = `${height}px`;
+    const ctx = pmfChartCanvas.getContext('2d');
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, width, height);
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, width, height);
+    pmfChartTooltip.style.display = 'none';
+
+    if (!nValid || !pValid) {
+      pmfChartState = { valid: false, n, p, probabilities: [], plot: null };
+      pmfChartError.style.display = 'block';
+      pmfChartError.textContent = 'Enter valid values for n and p to display the PMF graph.';
+      pmfChartNote.textContent = 'The graph appears after both Binomial parameters are valid.';
+      return;
+    }
+
+    // Keep the browser responsive if an accidental extremely large n is entered.
+    if (n > 20000) {
+      pmfChartState = { valid: false, n, p, probabilities: [], plot: null };
+      pmfChartError.style.display = 'block';
+      pmfChartError.textContent = 'The graph supports up to 20,000 trials so it remains responsive. Enter n ≤ 20,000 to plot every possible value of X.';
+      pmfChartNote.textContent = 'The other Binomial calculators continue to use the selected parameters.';
+      drawChartAxesOnly(ctx, width, height);
+      return;
+    }
+
+    pmfChartError.textContent = '';
+    pmfChartError.style.display = 'none';
+    const probabilities = buildBinomialSeries(n, p);
+    const mean = n * p;
+    const left = width < 420 ? 54 : 66;
+    const right = 18;
+    const top = 24;
+    const bottom = 62;
+    const plotWidth = Math.max(1, width - left - right);
+    const plotHeight = height - top - bottom;
+    const slotWidth = plotWidth / (n + 1);
+    const maxProbability = Math.max(...probabilities);
+    const yMax = maxProbability > 0 ? maxProbability * 1.12 : 1;
+    const yFor = value => top + plotHeight - (value / yMax) * plotHeight;
+
+    // Horizontal grid and Y-axis tick labels.
+    ctx.font = '11px system-ui, sans-serif';
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'middle';
+    for (let tick = 0; tick <= 4; tick++) {
+      const value = yMax * tick / 4;
+      const y = yFor(value);
+      ctx.strokeStyle = '#e9edf5';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(left, y);
+      ctx.lineTo(width - right, y);
+      ctx.stroke();
+      ctx.fillStyle = '#697386';
+      ctx.fillText(Number(value.toPrecision(3)).toString(), left - 9, y);
+    }
+
+    // Axes.
+    ctx.strokeStyle = '#9aa4b5';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(left, top);
+    ctx.lineTo(left, top + plotHeight);
+    ctx.lineTo(width - right, top + plotHeight);
+    ctx.stroke();
+
+    // Draw each possible discrete outcome X = 0, 1, ..., n.
+    ctx.fillStyle = '#465cf5';
+    const barWidth = Math.max(0.55, Math.min(18, slotWidth * 0.72));
+    for (let x = 0; x <= n; x++) {
+      const probability = probabilities[x];
+      const barHeight = Math.max(0, (probability / yMax) * plotHeight);
+      const centerX = left + (x + 0.5) * slotWidth;
+      ctx.fillRect(centerX - barWidth / 2, top + plotHeight - barHeight, barWidth, barHeight);
+    }
+
+    // X-axis tick labels: all values when n is small, fewer evenly-spaced labels otherwise.
+    const tickStep = Math.max(1, Math.ceil((n + 1) / Math.max(5, Math.floor(plotWidth / 48))));
+    ctx.fillStyle = '#697386';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    for (let x = 0; x <= n; x++) {
+      if (x % tickStep === 0 || x === n) {
+        const centerX = left + (x + 0.5) * slotWidth;
+        ctx.fillText(String(x), centerX, top + plotHeight + 8);
+      }
+    }
+
+    // Dashed vertical reference line at the mean μ = np.
+    const meanX = left + (mean + 0.5) * slotWidth;
+    ctx.save();
+    ctx.strokeStyle = '#d35444';
+    ctx.lineWidth = 2;
+    ctx.setLineDash([6, 4]);
+    ctx.beginPath();
+    ctx.moveTo(meanX, top);
+    ctx.lineTo(meanX, top + plotHeight);
+    ctx.stroke();
+    ctx.restore();
+    ctx.fillStyle = '#b84435';
+    ctx.font = '600 11px system-ui, sans-serif';
+    ctx.textAlign = meanX > width - 95 ? 'right' : 'left';
+    ctx.textBaseline = 'bottom';
+    ctx.fillText(`Mean = ${Number(mean.toFixed(4)).toString()}`, meanX + (meanX > width - 95 ? -5 : 5), top - 4);
+
+    // Axis titles.
+    ctx.fillStyle = '#344054';
+    ctx.font = '600 12px system-ui, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'alphabetic';
+    ctx.fillText('Number of successes X', left + plotWidth / 2, height - 12);
+    ctx.save();
+    ctx.translate(16, top + plotHeight / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.fillText('Probability P(X)', 0, 0);
+    ctx.restore();
+
+    pmfChartState = {
+      valid: true, n, p, probabilities,
+      plot: { left, right, top, bottom, width: plotWidth, height: plotHeight, slotWidth, canvasWidth: width, canvasHeight: height }
+    };
+    pmfChartNote.textContent = `Showing X = 0 to ${n}. Move your pointer over the bars to inspect exact probabilities; the dashed line marks the mean μ = ${Number(mean.toFixed(4)).toString()}.`;
+  }
+
+  function drawChartAxesOnly(ctx, width, height) {
+    const left = 66, right = 18, top = 24, bottom = 62;
+    ctx.strokeStyle = '#e9edf5';
+    ctx.beginPath();
+    ctx.moveTo(left, top);
+    ctx.lineTo(left, height - bottom);
+    ctx.lineTo(width - right, height - bottom);
+    ctx.stroke();
+    ctx.fillStyle = '#697386';
+    ctx.font = '12px system-ui, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Reduce n to display the full PMF graph', (left + width - right) / 2, height / 2);
+  }
+
+  function showPMFTip(event) {
+    if (!pmfChartState.valid || !pmfChartState.plot) return;
+    const rect = pmfChartCanvas.getBoundingClientRect();
+    const plot = pmfChartState.plot;
+    const pointerX = event.clientX - rect.left;
+    const pointerY = event.clientY - rect.top;
+    const minX = plot.left;
+    const maxX = plot.left + plot.width;
+    const minY = plot.top;
+    const maxY = plot.top + plot.height;
+    if (pointerX < minX || pointerX > maxX || pointerY < minY || pointerY > maxY) {
+      pmfChartTooltip.style.display = 'none';
+      return;
+    }
+    const index = Math.max(0, Math.min(pmfChartState.n,
+      Math.round((pointerX - plot.left) / plot.slotWidth - 0.5)));
+    const probability = pmfChartState.probabilities[index];
+    const probabilityText = probability === 0 ? '0' : Number(probability.toPrecision(8)).toString();
+    pmfChartTooltip.innerHTML = `<strong>X = ${index}</strong><br>P(X = ${index}) = ${probabilityText}`;
+    pmfChartTooltip.style.display = 'block';
+    const tipWidth = pmfChartTooltip.offsetWidth || 190;
+    const tipHeight = pmfChartTooltip.offsetHeight || 48;
+    pmfChartTooltip.style.left = `${Math.max(8, Math.min(rect.width - tipWidth - 8, pointerX + 12))}px`;
+    pmfChartTooltip.style.top = `${Math.max(8, Math.min(rect.height - tipHeight - 8, pointerY - 12))}px`;
+  }
+
+  pmfChartCanvas.addEventListener('pointermove', showPMFTip);
+  pmfChartCanvas.addEventListener('pointerleave', () => { pmfChartTooltip.style.display = 'none'; });
+  window.addEventListener('resize', drawPMFChart);
+  [nInput, pInput, kInput, cdfKInput].forEach(input => input.addEventListener('input', validateAndUpdate));
+  validateAndUpdate();
+}
+function renderCountDistribution(type) {
+  const isPoisson = type === 'poisson';
+  const cfg = isPoisson ? {
+    type, prefix: 'poisson', title: 'Poisson', eyebrow: 'Distribution module / 02',
+    description: 'Model the number of events occurring in a fixed interval when events happen independently at a constant average rate.',
+    parameter: 'lambda', symbol: 'λ', parameterLabel: 'Average event rate (λ)', defaultValue: '4', min: '0', max: '500',
+    parameterHint: 'Must be between 0 and 500. A rate of 0 means no events occur.', parameterError: 'The Poisson rate λ must be a number between 0 and 500, inclusive.',
+    distribution: 'X ~ Poisson(λ)', pmfFormula: 'P(X = k) = e<sup>−λ</sup> λ<sup>k</sup> / k!',
+    cdfFormula: 'P(X ≤ k) = Σ<sub>i=0</sub><sup>k</sup> P(X = i)',
+    pmfHelp: 'Enter a non-negative whole number of events.', cdfHelp: 'Enter a non-negative whole number of events.',
+    kDefault: '3', kMin: '0', xStart: 0, chartXLabel: 'Number of events X',
+    interpretation: 'P(X = k) is the chance of observing exactly k events in the selected interval.',
+    cdfInterpretation: 'P(X ≤ k) means the probability of observing k or fewer events.',
+    meanFormula: 'μ = λ', varianceFormula: 'σ² = λ', stdFormula: 'σ = √λ', secondFormula: 'E[X²] = λ² + λ', skewFormula: 'γ₁ = 1 / √λ'
+  } : {
+    type, prefix: 'geometric', title: 'Geometric', eyebrow: 'Distribution module / 03',
+    description: 'Model the number of independent trials required to get the first success, when every trial has the same success probability.',
+    parameter: 'p', symbol: 'p', parameterLabel: 'Probability of success (p)', defaultValue: '0.35', min: '0.000001', max: '1',
+    parameterHint: 'Must be greater than 0 and at most 1. This module counts the trial on which the first success occurs.', parameterError: 'The Geometric success probability p must be greater than 0 and at most 1.',
+    distribution: 'X ~ Geometric(p)', pmfFormula: 'P(X = k) = (1 − p)<sup>k − 1</sup> p',
+    cdfFormula: 'P(X ≤ k) = 1 − (1 − p)<sup>k</sup>',
+    pmfHelp: 'Enter a positive whole number of trials (k ≥ 1).', cdfHelp: 'Enter a positive whole number of trials (k ≥ 1).',
+    kDefault: '3', kMin: '1', xStart: 1, chartXLabel: 'Trials until first success X',
+    interpretation: 'P(X = k) is the chance that the first success happens on trial k.',
+    cdfInterpretation: 'P(X ≤ k) means the probability of getting the first success on or before trial k.',
+    meanFormula: 'μ = 1 / p', varianceFormula: 'σ² = (1 − p) / p²', stdFormula: 'σ = √variance', secondFormula: 'E[X²] = (2 − p) / p²', skewFormula: 'γ₁ = (2 − p) / √(1 − p)'
+  };
+  const id = suffix => `${cfg.prefix}${suffix}`;
+  app.innerHTML = `
+    <p class="eyebrow">${cfg.eyebrow}</p>
+    <h1>${cfg.title} Distribution</h1>
+    <p class="intro">${cfg.description}</p>
+    <div class="layout">
+      <section class="panel">
+        <h2>${cfg.title} parameters</h2>
+        <p class="subtext">Enter the distribution parameter. Calculations and the graph update automatically as valid values change.</p>
+        <div class="fields">
+          <div>
+            <label for="${id('Parameter')}">${cfg.parameterLabel}</label>
+            <input id="${id('Parameter')}" type="number" min="${cfg.min}" ${cfg.max ? `max="${cfg.max}"` : ''} step="any" value="${cfg.defaultValue}" aria-describedby="${id('ParameterHint')}">
+            <div class="hint" id="${id('ParameterHint')}">${cfg.parameterHint}</div>
+          </div>
+          <div>
+            <label>Distribution</label>
+            <div style="padding:12px 13px;border:1px solid var(--line);border-radius:10px;background:#f8f9fd;font-size:14px;min-height:44px">${cfg.distribution}</div>
+            <div class="hint">${isPoisson ? 'λ is the average event count per interval.' : 'X counts trials up to and including the first success.'}</div>
+          </div>
+        </div>
+        <div class="error" id="${id('Error')}" role="alert" aria-live="polite"></div>
+      </section>
+      <aside class="panel" aria-live="polite">
+        <h2>Selected value</h2>
+        <p class="subtext">Current parameter used for these ${cfg.title} calculations.</p>
+        <div class="result-top">
+          <div class="result-label">${cfg.parameterLabel}</div>
+          <div class="result-value" id="${id('SelectedParameter')}">${cfg.defaultValue}</div>
+          <div class="result-caption">${isPoisson ? 'Non-negative average rate' : 'Probability in (0, 1]'}</div>
+        </div>
+        <p class="note">Changing this value updates the statistics, PMF, CDF, and chart.</p>
+      </aside>
+    </div>
+
+    <section class="panel statistics-panel" aria-live="polite" aria-labelledby="${id('StatisticsHeading')}">
+      <h2 id="${id('StatisticsHeading')}">${cfg.title} statistics</h2>
+      <p class="subtext">Mean, variance, spread, second moment, and skewness for the selected distribution.</p>
+      <div class="stats">
+        <div class="stat"><span>Mean</span><strong id="${id('MeanValue')}">—</strong><div class="stat-formula">${cfg.meanFormula}</div></div>
+        <div class="stat"><span>Variance</span><strong id="${id('VarianceValue')}">—</strong><div class="stat-formula">${cfg.varianceFormula}</div></div>
+        <div class="stat"><span>Standard deviation</span><strong id="${id('StdDevValue')}">—</strong><div class="stat-formula">${cfg.stdFormula}</div></div>
+        <div class="stat"><span>Second moment E[X²]</span><strong id="${id('SecondMomentValue')}">—</strong><div class="stat-formula">${cfg.secondFormula}</div></div>
+        <div class="stat"><span>Skewness</span><strong id="${id('SkewnessValue')}">—</strong><div class="stat-formula">${cfg.skewFormula}</div></div>
+      </div>
+      <p class="note" id="${id('StatisticsNote')}">Statistics are shown to at most 4 decimal places.</p>
+    </section>
+
+    <section class="panel pmf-panel" aria-live="polite" aria-labelledby="${id('PMFHeading')}">
+      <h2 id="${id('PMFHeading')}">${cfg.title} PMF calculator</h2>
+      <p class="subtext">Calculate the probability of exactly k events or trials using the selected parameter.</p>
+      <div class="fields">
+        <div><label for="${id('K')}">Value of k</label><input id="${id('K')}" type="number" min="${cfg.kMin}" step="1" value="${cfg.kDefault}" inputmode="numeric"><div class="hint">${cfg.pmfHelp}</div></div>
+        <div><label>Random variable</label><div style="padding:12px 13px;border:1px solid var(--line);border-radius:10px;background:#f8f9fd;font-size:14px;min-height:44px">${cfg.distribution}</div><div class="hint">The formula for this distribution is shown below.</div></div>
+      </div>
+      <div class="error" id="${id('PMFError')}" role="alert" aria-live="polite"></div>
+      <div class="formula"><small>Probability mass function (PMF)</small><div class="formula-main">${cfg.pmfFormula}</div><small id="${id('Substitution')}">Enter valid values to see the substitution.</small></div>
+      <div class="result-top pmf-result"><div class="result-label">Probability at k = <span id="${id('ResultK')}">${cfg.kDefault}</span></div><div class="result-value" id="${id('PMFValue')}">—</div><div class="result-caption" id="${id('PMFPercent')}">—</div></div>
+      <p class="plain-explanation">${cfg.interpretation}</p>
+    </section>
+
+    <section class="panel cdf-panel" aria-live="polite" aria-labelledby="${id('CDFHeading')}">
+      <h2 id="${id('CDFHeading')}">${cfg.title} CDF calculator</h2>
+      <p class="subtext">Calculate the probability of k or fewer, alongside the probability of a value greater than k.</p>
+      <div class="fields">
+        <div><label for="${id('CdfK')}">Value of k</label><input id="${id('CdfK')}" type="number" min="${cfg.kMin}" step="1" value="${cfg.kDefault}" inputmode="numeric"><div class="hint">${cfg.cdfHelp}</div></div>
+        <div><label>Complement</label><div style="padding:12px 13px;border:1px solid var(--line);border-radius:10px;background:#f8f9fd;font-size:14px;min-height:44px">P(X &gt; k) = 1 − P(X ≤ k)</div><div class="hint">The two results add up to 1.</div></div>
+      </div>
+      <div class="error" id="${id('CDFError')}" role="alert" aria-live="polite"></div>
+      <div class="cdf-results">
+        <div class="cdf-result"><div class="result-label">Cumulative probability · P(X ≤ k)</div><div class="result-value" id="${id('CDFValue')}">—</div><div class="result-caption" id="${id('CDFPercent')}">—</div></div>
+        <div class="cdf-result"><div class="result-label">Complementary probability · P(X &gt; k)</div><div class="result-value" id="${id('SurvivalValue')}">—</div><div class="result-caption" id="${id('SurvivalPercent')}">—</div></div>
+      </div>
+      <div class="formula"><small>Cumulative distribution function (CDF)</small><div class="formula-main">${cfg.cdfFormula}</div><div class="formula-main">P(X &gt; k) = 1 − P(X ≤ k)</div></div>
+      <p class="plain-explanation">${cfg.cdfInterpretation}</p>
+    </section>
+
+    <section class="panel chart-panel" aria-labelledby="${id('ChartHeading')}">
+      <h2 id="${id('ChartHeading')}">${cfg.title} PMF graph</h2>
+      <p class="subtext">The bars show the probability mass function. The dashed line marks the mean when it falls within the displayed range.</p>
+      <div class="chart-frame" id="${id('ChartFrame')}"><canvas class="module-chart-canvas" id="${id('ChartCanvas')}" role="img" aria-label="${cfg.title} probability mass function bar chart with a mean reference line."></canvas><div class="chart-tooltip" id="${id('ChartTooltip')}" role="status" aria-live="polite"></div></div>
+      <div class="chart-legend"><span class="legend-item"><span class="legend-swatch"></span>${cfg.title} PMF, P(X)</span><span class="legend-item"><span class="legend-line"></span>Mean</span></div>
+      <p class="plain-explanation" id="${id('ChartNote')}">Move your pointer over a bar to see its probability.</p>
+      <div class="error" id="${id('ChartError')}" role="alert" aria-live="polite"></div>
+    </section>
+  `;
+
+  const paramInput = document.getElementById(id('Parameter'));
+  const kInput = document.getElementById(id('K'));
+  const cdfKInput = document.getElementById(id('CdfK'));
+  const chartCanvas = document.getElementById(id('ChartCanvas'));
+  const chartTooltip = document.getElementById(id('ChartTooltip'));
+  const chartFrame = document.getElementById(id('ChartFrame'));
+  const fmt = value => {
+    if (value === null || !Number.isFinite(value)) return 'Undefined';
+    if (Object.is(value, -0)) value = 0;
+    if (value !== 0 && (Math.abs(value) < 0.0000001 || Math.abs(value) >= 1e10)) return value.toExponential(6);
+    return Number(value.toFixed(4)).toString();
+  };
+  const fmtProb = value => value === 0 ? '0' : (value < 0.0000001 ? value.toExponential(6) : Number(value.toPrecision(8)).toString());
+  const fmtPercent = value => `${Number((value * 100).toPrecision(6)).toString()}% probability`;
+  let chartState = { valid: false, values: [], start: cfg.xStart, plot: null };
+
+  function poissonPMF(lambda, k) {
+    if (lambda === 0) return k === 0 ? 1 : 0;
+    if (k > 10000) return 0;
+    let probability = Math.exp(-lambda);
+    for (let i = 1; i <= k; i++) probability *= lambda / i;
+    return probability;
+  }
+  function geometricPMF(probability, k) {
+    if (probability === 1) return k === 1 ? 1 : 0;
+    return probability * Math.pow(1 - probability, k - 1);
+  }
+  function getPMF(param, k) {
+    return isPoisson ? poissonPMF(param, k) : geometricPMF(param, k);
+  }
+  function getCDF(param, k) {
+    if (!isPoisson) {
+      const upper = Math.pow(1 - param, k);
+      return Math.min(1, Math.max(0, 1 - upper));
+    }
+    if (param === 0) return 1;
+    if (k > 10000) return 1;
+    let probability = Math.exp(-param);
+    let cumulative = probability;
+    for (let i = 1; i <= k; i++) {
+      probability *= param / i;
+      cumulative += probability;
+    }
+    return Math.min(1, Math.max(0, cumulative));
+  }
+  function parameterIsValid(value, raw) {
+    if (raw.trim() === '' || !Number.isFinite(value)) return false;
+    return isPoisson ? value >= 0 && value <= 500 : value > 0 && value <= 1;
+  }
+  function kIsValid(value, raw) {
+    return raw.trim() !== '' && Number.isSafeInteger(value) && value >= (isPoisson ? 0 : 1);
+  }
+
+  function update() {
+    const raw = paramInput.value;
+    const param = Number(raw);
+    const paramValid = parameterIsValid(param, raw);
+    const kRaw = kInput.value;
+    const k = Number(kRaw);
+    const kValid = kIsValid(k, kRaw);
+    const cdfRaw = cdfKInput.value;
+    const cdfK = Number(cdfRaw);
+    const cdfKValid = kIsValid(cdfK, cdfRaw);
+    paramInput.setAttribute('aria-invalid', String(!paramValid));
+    kInput.setAttribute('aria-invalid', String(!kValid));
+    cdfKInput.setAttribute('aria-invalid', String(!cdfKValid));
+    document.getElementById(id('SelectedParameter')).textContent = paramValid ? String(param) : '—';
+    showError(id('Error'), paramValid ? '' : cfg.parameterError);
+
+    if (paramValid) {
+      let mean, variance, secondMoment, std, skew;
+      if (isPoisson) {
+        mean = param; variance = param; secondMoment = param * param + param; std = Math.sqrt(variance); skew = param === 0 ? null : 1 / Math.sqrt(param);
+      } else {
+        mean = 1 / param; variance = (1 - param) / (param * param); std = Math.sqrt(variance); secondMoment = variance + mean * mean; skew = variance === 0 ? null : (2 - param) / Math.sqrt(1 - param);
+      }
+      document.getElementById(id('MeanValue')).textContent = fmt(mean);
+      document.getElementById(id('VarianceValue')).textContent = fmt(variance);
+      document.getElementById(id('StdDevValue')).textContent = fmt(std);
+      document.getElementById(id('SecondMomentValue')).textContent = fmt(secondMoment);
+      document.getElementById(id('SkewnessValue')).textContent = skew === null ? 'Undefined' : fmt(skew);
+      document.getElementById(id('StatisticsNote')).textContent = skew === null
+        ? 'Results are shown to at most 4 decimal places. Skewness is undefined for this degenerate distribution because its variance is zero.'
+        : 'Results are shown to at most 4 decimal places.';
+    } else {
+      ['MeanValue','VarianceValue','StdDevValue','SecondMomentValue','SkewnessValue'].forEach(name => document.getElementById(id(name)).textContent = '—');
+      document.getElementById(id('StatisticsNote')).textContent = 'Enter a valid parameter to calculate statistics.';
+    }
+
+    updatePMF(param, paramValid, k, kValid);
+    updateCDF(param, paramValid, cdfK, cdfKValid);
+    drawChart(param, paramValid);
+  }
+  function showError(elementId, message) {
+    const el = document.getElementById(elementId);
+    el.textContent = message;
+    el.style.display = message ? 'block' : 'none';
+  }
+  function updatePMF(param, paramValid, k, kValid) {
+    showError(id('PMFError'), !paramValid ? cfg.parameterError : !kValid ? (isPoisson ? 'k must be a non-negative whole number.' : 'k must be a positive whole number (k ≥ 1).') : '');
+    document.getElementById(id('ResultK')).textContent = kRawSafe(kInput.value);
+    if (!paramValid || !kValid) {
+      document.getElementById(id('PMFValue')).textContent = '—';
+      document.getElementById(id('PMFPercent')).textContent = 'Enter valid parameter and k values.';
+      document.getElementById(id('Substitution')).textContent = 'Enter valid values to see the substitution.';
+      return;
+    }
+    const probability = getPMF(param, k);
+    document.getElementById(id('PMFValue')).textContent = fmtProb(probability);
+    document.getElementById(id('PMFPercent')).textContent = fmtPercent(probability);
+    document.getElementById(id('ResultK')).textContent = String(k);
+    document.getElementById(id('Substitution')).textContent = isPoisson
+      ? (param === 0 ? `P(X = ${k}) = ${k === 0 ? '1' : '0'} when λ = 0` : `P(X = ${k}) = e⁻${param} × ${param}^${k} / ${k}!`)
+      : (param === 1 ? `P(X = ${k}) = ${k === 1 ? '1' : '0'} when p = 1` : `P(X = ${k}) = (1 − ${param})^${k - 1} × ${param}`);
+  }
+  function kRawSafe(raw) { return raw.trim() === '' ? 'k' : raw; }
+  function updateCDF(param, paramValid, k, kValid) {
+    showError(id('CDFError'), !paramValid ? cfg.parameterError : !kValid ? (isPoisson ? 'k must be a non-negative whole number.' : 'k must be a positive whole number (k ≥ 1).') : '');
+    if (!paramValid || !kValid) {
+      ['CDFValue','SurvivalValue'].forEach(name => document.getElementById(id(name)).textContent = '—');
+      ['CDFPercent','SurvivalPercent'].forEach(name => document.getElementById(id(name)).textContent = 'Enter valid parameter and k values.');
+      return;
+    }
+    const cdf = getCDF(param, k);
+    const survival = Math.min(1, Math.max(0, 1 - cdf));
+    document.getElementById(id('CDFValue')).textContent = fmtProb(cdf);
+    document.getElementById(id('CDFPercent')).textContent = fmtPercent(cdf);
+    document.getElementById(id('SurvivalValue')).textContent = fmtProb(survival);
+    document.getElementById(id('SurvivalPercent')).textContent = fmtPercent(survival);
+  }
+  function seriesFor(param) {
+    let start, end, values = [];
+    if (isPoisson) {
+      start = 0;
+      end = Math.min(650, Math.max(12, Math.ceil(param + 4.5 * Math.sqrt(param + 1) + 4)));
+      let probability = Math.exp(-param);
+      values.push(probability);
+      for (let x = 1; x <= end; x++) {
+        probability *= param / x;
+        values.push(probability);
+      }
+    } else {
+      start = 1;
+      end = param === 1 ? 12 : Math.min(500, Math.max(12, Math.ceil(Math.log(0.005) / Math.log1p(-param))));
+      for (let x = start; x <= end; x++) values.push(geometricPMF(param, x));
+    }
+    return { start, end, values };
+  }
+  function drawChart(param, paramValid) {
+    const rect = chartCanvas.getBoundingClientRect();
+    const width = Math.max(280, Math.round(rect.width || chartFrame.clientWidth || 640));
+    const height = 360;
+    const dpr = Math.max(1, window.devicePixelRatio || 1);
+    chartCanvas.width = Math.round(width * dpr);
+    chartCanvas.height = Math.round(height * dpr);
+    chartCanvas.style.height = `${height}px`;
+    const ctx = chartCanvas.getContext('2d');
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, width, height);
+    ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, width, height);
+    chartTooltip.style.display = 'none';
+    if (!paramValid) {
+      chartState = { valid: false, values: [], start: cfg.xStart, plot: null };
+      showError(id('ChartError'), 'Enter a valid parameter to display the PMF graph.');
+      document.getElementById(id('ChartNote')).textContent = 'The graph appears after the parameter is valid.';
+      return;
+    }
+    showError(id('ChartError'), '');
+    const series = seriesFor(param);
+    const { start, end, values } = series;
+    const left = width < 420 ? 54 : 66, right = 18, top = 24, bottom = 62;
+    const plotWidth = Math.max(1, width - left - right), plotHeight = height - top - bottom;
+    const slotWidth = plotWidth / values.length;
+    const maxProbability = Math.max(...values);
+    const yMax = maxProbability > 0 ? maxProbability * 1.12 : 1;
+    const yFor = value => top + plotHeight - (value / yMax) * plotHeight;
+    ctx.font = '11px system-ui, sans-serif'; ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+    for (let tick = 0; tick <= 4; tick++) {
+      const value = yMax * tick / 4, y = yFor(value);
+      ctx.strokeStyle = '#e9edf5'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(left, y); ctx.lineTo(width - right, y); ctx.stroke();
+      ctx.fillStyle = '#697386'; ctx.fillText(Number(value.toPrecision(3)).toString(), left - 9, y);
+    }
+    ctx.strokeStyle = '#9aa4b5'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(left, top); ctx.lineTo(left, top + plotHeight); ctx.lineTo(width - right, top + plotHeight); ctx.stroke();
+    ctx.fillStyle = '#465cf5';
+    const barWidth = Math.max(0.55, Math.min(18, slotWidth * 0.72));
+    for (let i = 0; i < values.length; i++) {
+      const barHeight = Math.max(0, (values[i] / yMax) * plotHeight);
+      const centerX = left + (i + 0.5) * slotWidth;
+      ctx.fillRect(centerX - barWidth / 2, top + plotHeight - barHeight, barWidth, barHeight);
+    }
+    const tickStep = Math.max(1, Math.ceil(values.length / Math.max(5, Math.floor(plotWidth / 48))));
+    ctx.fillStyle = '#697386'; ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+    for (let i = 0; i < values.length; i++) {
+      const xVal = start + i;
+      if (i % tickStep === 0 || i === values.length - 1) ctx.fillText(String(xVal), left + (i + 0.5) * slotWidth, top + plotHeight + 8);
+    }
+    const mean = isPoisson ? param : 1 / param;
+    const meanOnChart = mean >= start && mean <= end;
+    if (meanOnChart) {
+      const meanX = left + (mean - start + 0.5) * slotWidth;
+      ctx.save(); ctx.strokeStyle = '#d35444'; ctx.lineWidth = 2; ctx.setLineDash([6,4]); ctx.beginPath(); ctx.moveTo(meanX, top); ctx.lineTo(meanX, top + plotHeight); ctx.stroke(); ctx.restore();
+      ctx.fillStyle = '#b84435'; ctx.font = '600 11px system-ui, sans-serif'; ctx.textAlign = meanX > width - 95 ? 'right' : 'left'; ctx.textBaseline = 'bottom';
+      ctx.fillText(`Mean = ${Number(mean.toFixed(4)).toString()}`, meanX + (meanX > width - 95 ? -5 : 5), top - 4);
+    }
+    ctx.fillStyle = '#344054'; ctx.font = '600 12px system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic'; ctx.fillText(cfg.chartXLabel, left + plotWidth / 2, height - 12);
+    ctx.save(); ctx.translate(16, top + plotHeight / 2); ctx.rotate(-Math.PI / 2); ctx.fillText('Probability P(X)', 0, 0); ctx.restore();
+    chartState = { valid: true, start, end, values, plot: { left, right, top, width: plotWidth, height: plotHeight, slotWidth, canvasWidth: width, canvasHeight: height } };
+    const truncation = isPoisson ? 'Poisson has an infinite range, so only the displayed range is plotted.' : (end === 500 && param < 0.01 ? 'The graph is capped at 500 trials; the remaining tail is not displayed.' : 'The graph shows the values with the main probability mass.');
+    document.getElementById(id('ChartNote')).textContent = `${truncation} ${meanOnChart ? `The dashed line marks the mean (${Number(mean.toFixed(4)).toString()}).` : `The mean (${Number(mean.toFixed(4)).toString()}) is outside the displayed range.`} Move your pointer over a bar to inspect its probability.`;
+  }
+  function showTip(event) {
+    if (!chartState.valid || !chartState.plot) return;
+    const rect = chartCanvas.getBoundingClientRect(), plot = chartState.plot;
+    const px = event.clientX - rect.left, py = event.clientY - rect.top;
+    if (px < plot.left || px > plot.left + plot.width || py < plot.top || py > plot.top + plot.height) { chartTooltip.style.display = 'none'; return; }
+    const index = Math.max(0, Math.min(chartState.values.length - 1, Math.floor((px - plot.left) / plot.slotWidth)));
+    const x = chartState.start + index, probability = chartState.values[index];
+    chartTooltip.innerHTML = `<strong>X = ${x}</strong><br>P(X = ${x}) = ${fmtProb(probability)}`;
+    chartTooltip.style.display = 'block';
+    const tw = chartTooltip.offsetWidth || 190, th = chartTooltip.offsetHeight || 48;
+    chartTooltip.style.left = `${Math.max(8, Math.min(rect.width - tw - 8, px + 12))}px`;
+    chartTooltip.style.top = `${Math.max(8, Math.min(rect.height - th - 8, py - 12))}px`;
+  }
+  chartCanvas.addEventListener('pointermove', showTip);
+  chartCanvas.addEventListener('pointerleave', () => { chartTooltip.style.display = 'none'; });
+  window.addEventListener('resize', () => drawChart(Number(paramInput.value), parameterIsValid(Number(paramInput.value), paramInput.value)));
+  [paramInput, kInput, cdfKInput].forEach(input => input.addEventListener('input', update));
+  update();
+}
+function renderPoisson() { renderCountDistribution('poisson'); }
+function renderGeometric() { renderCountDistribution('geometric'); }
+function go(page) {
+  navButtons.forEach(button => button.classList.toggle('active', button.dataset.page === page));
+  if (page === 'home') renderHome();
+  else if (page === 'binomial') renderBinomial();
+  else if (page === 'poisson') renderPoisson();
+  else renderGeometric();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.addEventListener('click', event => {
+  const nav = event.target.closest('nav button[data-page]');
+  const opener = event.target.closest('[data-open]');
+  if (nav) go(nav.dataset.page);
+  else if (opener) go(opener.dataset.open);
+});
+renderHome();
+</script>
+</body>
+</html>

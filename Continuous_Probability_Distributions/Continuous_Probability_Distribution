@@ -1,0 +1,38 @@
+# Continuous Probability Distributions: Industry Applications
+
+## Project Description
+
+**Continuous Probability Distributions: Industry Applications** is an interactive, web-based educational application designed to bridge the gap between theoretical statistics and real-world Artificial Intelligence and Machine Learning (AIML) applications.
+
+The application helps undergraduate students understand continuous probability distributions through practical industry scenarios, interactive calculations, mathematical formulas, and dynamic visualizations.
+
+It consists of three major learning modules:
+
+### 1. Normal Distribution – Manufacturing Quality Control
+Demonstrates how the Normal Distribution is used to analyze manufactured component dimensions and maintain quality standards. Students can calculate probability density, specification-limit probabilities, defective percentages, and z-scores using interactive inputs and a dynamic bell curve.
+
+### 2. Exponential Distribution – Cloud Request Inter-arrival Time
+Explores how the Exponential Distribution models the time between consecutive cloud service requests under a constant-rate Poisson arrival process. Students can calculate mean inter-arrival time, variance, cumulative probability, survival probability, and conditional probability while understanding the memoryless property.
+
+### 3. Central Limit Theorem – Warehouse Processing Time
+Demonstrates how sample averages of warehouse order-processing times approach an approximately Normal distribution as sample size increases. Students can explore population mean, standard deviation, sample size, standard error, z-scores, and probabilities through interactive calculations and visualizations.
+
+## Key Features
+- Interactive input parameters and automatic calculations.
+- Mathematical formulas with simple explanations.
+- Dynamic probability distribution graphs.
+- Real-world industry-based problem statements.
+- Probability and statistical analysis.
+- Z-score calculations and interpretations.
+- Input validation and unit conversions.
+- Beginner-friendly explanations and visual learning.
+
+## Technology Used
+- HTML
+- CSS
+- JavaScript
+- SVG-based dynamic visualizations
+
+## Objective
+
+The primary objective is to make statistical concepts easier to understand by connecting mathematical theory with practical applications in manufacturing, cloud computing, and warehouse operations. It provides students with a hands-on learning environment to explore how probability distributions support data analysis and decision-making in AIML.

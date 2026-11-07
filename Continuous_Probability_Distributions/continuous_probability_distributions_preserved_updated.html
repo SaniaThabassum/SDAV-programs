@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Continuous Probability Distributions: Industry Applications</title>
+<style>
+:root{--bg:#f5f4ff;--ink:#202044;--muted:#686887;--purple:#7257e8;--blue:#3988f5;--cyan:#40c6d8;--card:#fff;--line:#e7e4fa;--shadow:0 14px 38px rgba(57,48,125,.10)}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--ink);background:linear-gradient(135deg,#f7f4ff 0%,#eef6ff 55%,#f5faff 100%);min-height:100vh}
+header{padding:34px max(5vw,22px) 28px;background:linear-gradient(115deg,#5c42c8,#477ee9 60%,#42b8d2);color:white;position:relative;overflow:hidden}
+header:after{content:"";position:absolute;width:300px;height:300px;border-radius:50%;background:#ffffff18;right:7%;top:-170px}
+.eyebrow{font-size:12px;letter-spacing:2px;text-transform:uppercase;font-weight:800;opacity:.82}
+header h1{font-size:clamp(26px,4vw,42px);margin:10px 0 8px;max-width:850px}
+header p{margin:0;max-width:750px;line-height:1.6;color:#eef3ff}
+.shell{max-width:1180px;margin:26px auto;padding:0 20px 50px}
+nav{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px}
+nav button{border:1px solid #ddd8fa;background:#fff;color:#514b7b;padding:12px 17px;border-radius:13px;font-weight:750;cursor:pointer;box-shadow:0 5px 16px #4d45a00b;transition:.2s}
+nav button:hover{transform:translateY(-2px);border-color:#9a8cf0}
+nav button.active{color:white;border-color:transparent;background:linear-gradient(110deg,var(--purple),var(--blue));box-shadow:0 8px 20px #7257e844}
+.page{display:none}.page.active{display:block}
+.intro{margin:0 0 18px}.intro h2{font-size:25px;margin:0 0 7px}.intro p{color:var(--muted);margin:0;line-height:1.6}
+.layout{display:grid;grid-template-columns:minmax(280px,.9fr) minmax(0,1.3fr);gap:18px;align-items:start}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px;box-shadow:var(--shadow)}
+.section-heading{display:flex;align-items:center;gap:10px;margin:18px 0 11px;color:#5141b5;font-size:14px;font-weight:850;letter-spacing:.35px;text-transform:uppercase}.section-heading:after{content:"";height:1px;flex:1;background:linear-gradient(90deg,#d8d1fb,transparent)}
+.card h3{margin:0 0 15px;font-size:17px}.problem{background:linear-gradient(130deg,#f0edff,#eaf5ff);border:1px solid #e3e2ff;border-radius:15px;padding:16px;margin-bottom:17px;line-height:1.55;color:#45416d}
+.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+label{display:block;font-size:13px;font-weight:750;color:#4e4c70;margin-bottom:7px}
+input,select{width:100%;padding:11px 12px;border:1px solid #dcd9ee;border-radius:11px;background:#fcfcff;color:#272544;font-size:15px;outline:none}
+input:focus,select:focus{border-color:#8270ed;box-shadow:0 0 0 3px #8270ed20}
+small.hint{display:block;color:#8987a3;margin-top:5px;font-size:11px}
+.results{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+.metric{padding:14px;border-radius:14px;background:linear-gradient(145deg,#f6f3ff,#eff7ff);border:1px solid #e9e6fa;min-height:88px}
+.metric .name{font-size:12px;color:#777392;font-weight:700;margin-bottom:8px}
+.metric .value{font-size:21px;font-weight:850;color:#4f43b5;overflow-wrap:anywhere}
+.metric .unit{font-size:11px;color:#85829d;margin-top:4px}
+.chart-wrap{margin-top:16px;padding:12px;border:1px solid #ebe8f8;border-radius:15px;background:#fcfcff}
+svg{width:100%;height:auto;display:block;overflow:visible}
+.explain{margin-top:16px;padding:15px;border-radius:14px;background:#f5f9ff;border-left:4px solid #5799ed;color:#555473;line-height:1.55;font-size:13px}
+.formula{display:inline-block;padding:7px 10px;border-radius:9px;background:#f0edff;color:#5141b5;font-family:Georgia,serif;font-weight:700;margin:5px 0}
+.btn{margin-top:14px;border:0;border-radius:11px;padding:10px 15px;background:linear-gradient(110deg,#7257e8,#3988f5);color:white;font-weight:800;cursor:pointer}
+.btn:hover{filter:brightness(1.06)}
+.error{color:#b42342;font-size:12px;margin-top:10px;min-height:16px}
+.note{font-size:12px;color:#77758f;line-height:1.5}
+.legend{display:flex;gap:15px;flex-wrap:wrap;font-size:12px;color:#6c6986;margin:8px 2px}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px}
+@media(max-width:800px){.layout{grid-template-columns:1fr}.shell{padding-left:14px;padding-right:14px}}
+@media(max-width:480px){.field-grid,.results{grid-template-columns:1fr 1fr}.card{padding:16px}nav button{flex:1}}
+</style>
+</head>
+<body>
+<header>
+  <div class="eyebrow">Interactive AIML learning lab</div>
+  <h1>Continuous Probability Distributions</h1>
+  <p>Industry Applications — explore how probability models help describe manufacturing measurements, cloud request arrivals, and operational processes.</p>
+</header>
+<main class="shell">
+<nav aria-label="Modules">
+  <button class="active" data-page="home" onclick="showPage('home',this)">Overview</button>
+  <button data-page="normal" onclick="showPage('normal',this)">Normal Distribution</button>
+  <button data-page="exponential" onclick="showPage('exponential',this)">Exponential Distribution</button>
+  <button data-page="clt" onclick="showPage('clt',this)">Central Limit Theorem</button>
+</nav>
+
+<section id="home" class="page active">
+<div class="card" style="margin-bottom:18px"><h3>Welcome!</h3><p style="line-height:1.75;color:#555473;margin:0">Welcome! This educational tool bridges the gap between abstract statistical theory and real-world artificial intelligence and machine learning (AIML) applications. Select a module from the sidebar to explore how continuous probability distributions solve real industry problems.</p></div>  <div class="intro"><h2>Learn probability through real-world systems</h2><p>Choose a module to adjust parameters, calculate probabilities, and interpret the results with a live visualization.</p></div>
+  <div class="layout">
+    <div class="card"><h3>01 · Manufacturing quality control</h3><div class="problem">A factory measures the diameter of manufactured components. The Normal Distribution helps estimate how many components fall within specification limits and how many may be defective.</div><button class="btn" onclick="showPage('normal',document.querySelector('[data-page=normal]'))">Explore Normal Distribution</button></div>
+    <div class="card"><h3>02 · Cloud request inter-arrival time</h3><div class="problem">A cloud service receives requests over time. Under a constant-rate Poisson arrival model, the Exponential Distribution describes the time between consecutive requests.</div><button class="btn" onclick="showPage('exponential',document.querySelector('[data-page=exponential]'))">Explore Exponential Distribution</button></div>
+  </div>
+  <div class="card" style="margin-top:18px"><h3>03 · Warehouse processing time</h3><p class="note">The Central Limit Theorem explains why the distribution of sample-average processing times can become approximately Normal as sample size increases, under suitable conditions. This module is reserved for the next implementation stage.</p><button class="btn" onclick="showPage('clt',document.querySelector('[data-page=clt]'))">Explore CLT module</button></div>
+</section>
+
+<section id="normal" class="page">
+  <div class="intro"><h2>Normal Distribution — Manufacturing Quality Control</h2><p>Estimate component quality using a bell-shaped model of measured diameters.</p></div>
+  <div class="layout">
+    <div class="card">
+      <h3>Distribution Workspace</h3><div class="section-heading">Industrial Problem</div>
+      <div class="problem">A manufacturer produces components with diameters that are modeled by a Normal Distribution. Use the specification limits to estimate the proportion of components that meet quality requirements.</div>
+      <div class="section-heading">Input Parameters</div><div class="field-grid">
+        <div><label for="mu">Mean diameter (μ)</label><input id="mu" type="number" value="50" step="any"></div>
+        <div><label for="sd">Standard deviation (σ)</label><input id="sd" type="number" value="2" min="0.000001" step="any"></div>
+        <div><label for="lsl">Lower spec limit (LSL)</label><input id="lsl" type="number" value="46" step="any"></div>
+        <div><label for="usl">Upper spec limit (USL)</label><input id="usl" type="number" value="54" step="any"></div>
+        <div><label for="xval">Selected diameter (x)</label><input id="xval" type="number" value="51" step="any"></div>
+        <div><label for="nunit">Measurement unit</label><select id="nunit"><option>mm</option><option>cm</option><option>in</option></select></div>
+      </div>
+      <button class="btn" onclick="resetNormal()">Reset defaults</button><div id="nerror" class="error"></div>
+    </div>
+    <div class="card">
+      <h3>Live results</h3><div class="section-heading">Calculations and Results</div>
+      <div class="results">
+        <div class="metric"><div class="name">PDF at selected x</div><div class="value" id="npdf">—</div><div class="unit" id="npdfunit">per mm</div></div>
+        <div class="metric"><div class="name">Selected z-score</div><div class="value" id="nz">—</div><div class="unit">standard deviations</div></div>
+        <div class="metric"><div class="name">P(LSL ≤ X ≤ USL)</div><div class="value" id="nwithin">—</div><div class="unit">of components</div></div>
+        <div class="metric"><div class="name">P(X &lt; LSL)</div><div class="value" id="nbelow">—</div><div class="unit">of components</div></div>
+        <div class="metric"><div class="name">P(X &gt; USL)</div><div class="value" id="nabove">—</div><div class="unit">of components</div></div>
+        <div class="metric"><div class="name">Expected defective</div><div class="value" id="ndefect">—</div><div class="unit">percentage; estimated per 1,000 shown below</div></div>
+      </div>
+      <div class="section-heading">Dynamic Visualisation</div><div class="chart-wrap"><svg id="normalChart" viewBox="0 0 640 270" role="img" aria-label="Normal distribution curve showing specification limits"></svg><div class="legend"><span><i class="dot" style="background:#36b88b"></i>Within specifications</span><span><i class="dot" style="background:#f3a34b"></i>Outside specifications</span><span><i class="dot" style="background:#6255db"></i>Normal curve</span></div></div>
+      <div class="explain" id="ninterpret">—</div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:18px"><div class="section-heading">Mathematical Formulas</div><h3>What does the z-score do?</h3><div class="formula">z = (x − μ) / σ</div><p class="note">The z-score converts a measurement into the number of standard deviations it is from the mean. A positive z-score is above the mean, a negative z-score is below it, and zero is exactly at the mean. Standardizing values lets us use the standard Normal CDF to calculate probabilities.</p><div class="results"><div class="metric"><div class="name">LSL z-score</div><div class="value" id="nzl">—</div></div><div class="metric"><div class="name">USL z-score</div><div class="value" id="nzu">—</div></div></div></div>
+</section>
+
+<section id="exponential" class="page">
+  <div class="intro"><h2>Exponential Distribution — Cloud Request Inter-arrival Time</h2><p>Model the waiting time between consecutive cloud requests when arrivals occur at a constant average rate.</p></div>
+  <div class="layout">
+    <div class="card">
+      <h3>Industry scenario & inputs</h3>
+      <div class="problem">A cloud service receives requests at an illustrative average rate of λ = 12 requests per minute. The Exponential Distribution models the time between consecutive arrivals, assuming a constant-rate Poisson arrival process. This is inter-arrival time, not server response time.</div>
+      <div class="section-heading">Input Parameters</div><div class="field-grid">
+        <div><label for="lambda">Arrival rate (λ)</label><input id="lambda" type="number" value="12" min="0.000001" step="any"><small class="hint">Requests per minute</small></div>
+        <div><label for="threshold">Time threshold (t)</label><input id="threshold" type="number" value="5" min="0" step="any"><small class="hint">Seconds</small></div>
+        <div><label for="t1">Conditional threshold (t₁)</label><input id="t1" type="number" value="3" min="0" step="any"><small class="hint">Seconds</small></div>
+        <div><label for="t2">Conditional threshold (t₂)</label><input id="t2" type="number" value="8" min="0" step="any"><small class="hint">Seconds; must be ≥ t₁</small></div>
+      </div>
+      <button class="btn" onclick="resetExp()">Reset defaults</button><div id="eerror" class="error"></div>
+      <p class="note">Unit conversion: λ is entered per minute and converted to requests per second by dividing by 60 before combining it with time in seconds.</p>
+    </div>
+    <div class="card">
+      <h3>Live results</h3>
+      <div class="results">
+        <div class="metric"><div class="name">Mean inter-arrival time (1/λ)</div><div class="value" id="emean">—</div><div class="unit">seconds</div></div>
+        <div class="metric"><div class="name">Variance (1/λ²)</div><div class="value" id="evar">—</div><div class="unit">seconds²</div></div>
+        <div class="metric"><div class="name">P(T ≤ t)</div><div class="value" id="ecdf">—</div><div class="unit">probability by entered time t</div></div>
+        <div class="metric"><div class="name">P(T &gt; t)</div><div class="value" id="esurv">—</div><div class="unit">probability of waiting longer than t</div></div>
+        <div class="metric" style="grid-column:1/-1"><div class="name">P(T &gt; t₂ | T &gt; t₁)</div><div class="value" id="econditional">—</div><div class="unit">probability of waiting an additional t₂ − t₁ seconds, given no arrival by t₁</div></div>
+      </div>
+      <div class="section-heading">Dynamic Visualisation</div><div class="chart-wrap"><svg id="expChart" viewBox="0 0 640 280" role="img" aria-label="Exponential probability density curve with shaded area up to threshold t"></svg><div class="legend"><span><i class="dot" style="background:#6e5ae6"></i>PDF curve</span><span><i class="dot" style="background:#55c6a2"></i>Area P(T ≤ t)</span><span><i class="dot" style="background:#f0a34a"></i>Tail P(T &gt; t)</span></div></div>
+      <div class="explain" id="einterpret">—</div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:18px">
+    <div class="section-heading">Mathematical Formulas</div><h3>Formulas & the memoryless property</h3>
+    <div class="formula">f(t) = λe<sup>−λt</sup>, t ≥ 0</div>
+    <div class="formula">P(T ≤ t) = 1 − e<sup>−λt</sup></div>
+    <div class="formula">P(T &gt; t) = e<sup>−λt</sup></div>
+    <div class="formula">P(T &gt; t₂ | T &gt; t₁) = e<sup>−λ(t₂−t₁)</sup></div>
+    <p class="note"><b>Memoryless property in simple language:</b> If no request has arrived yet, the time already spent waiting does not change the probability distribution of the additional wait. For example, after waiting 3 seconds with no request, the chance of waiting more than another 5 seconds is the same as the chance of waiting more than 5 seconds from the start. This property applies to the ideal Exponential model.</p>
+    <p class="note"><b>Model assumption:</b> Requests are assumed to follow a constant-rate Poisson arrival process. Real systems may have changing traffic rates, bursts, or dependencies, so this is an illustrative model rather than a guarantee about actual traffic.</p>
+  </div>
+</section>
+
+<section id="clt" class="page">
+<div class="intro"><h2>Central Limit Theorem — Warehouse Processing Time</h2><p>Explore how sample averages behave when many independent processing-time observations are grouped together.</p></div>
+<div class="layout">
+<div class="card">
+<div class="section-heading">Industrial Problem</div><h3>Warehouse order processing</h3>
+<div class="problem">A warehouse records the time required to process individual orders. Individual times vary and may be skewed. Managers study averages from repeated samples to understand typical processing performance and how sample averages vary.</div>
+<div class="section-heading">Input Parameters</div>
+<div class="field-grid">
+<div><label for="cltMean">Population mean (μ)</label><input id="cltMean" type="number" min="0.01" step="any" value="18"><small class="hint">Minutes per order</small></div>
+<div><label for="cltSd">Population standard deviation (σ)</label><input id="cltSd" type="number" min="0.01" step="any" value="6"><small class="hint">Minutes</small></div>
+<div><label for="cltN">Sample size (n)</label><input id="cltN" type="number" min="1" max="10000" step="1" value="36"><small class="hint">Orders per sample</small></div>
+<div><label for="cltThreshold">Sample-mean threshold (x̄)</label><input id="cltThreshold" type="number" min="0" step="any" value="20"><small class="hint">Minutes</small></div>
+</div>
+<div class="section-heading">Mathematical Formulas</div>
+<div class="formula">μ<sub>x̄</sub> = μ</div><div class="formula">σ<sub>x̄</sub> = σ / √n</div><div class="formula">z = (x̄ − μ) / (σ / √n)</div>
+<p class="note">The standard error σ/√n measures the spread of sample means, not individual order times.</p>
+<button class="btn" onclick="resetCLT()">Reset defaults</button><div id="cltError" class="error"></div>
+</div>
+<div class="card">
+<div class="section-heading">Calculations and Results</div><h3>Sampling distribution of the mean</h3>
+<div class="results">
+<div class="metric"><div class="name">Mean of sample means</div><div class="value" id="cltOutMean">—</div><div class="unit">minutes</div></div>
+<div class="metric"><div class="name">Standard error</div><div class="value" id="cltOutSE">—</div><div class="unit">minutes</div></div>
+<div class="metric"><div class="name">z-score</div><div class="value" id="cltOutZ">—</div><div class="unit">standard errors</div></div>
+<div class="metric"><div class="name">P(X̄ ≤ threshold)</div><div class="value" id="cltOutProb">—</div><div class="unit">probability</div></div>
+<div class="metric"><div class="name">P(X̄ &gt; threshold)</div><div class="value" id="cltOutTail">—</div><div class="unit">probability</div></div>
+<div class="metric"><div class="name">Approx. 95% range</div><div class="value" id="cltOutRange">—</div><div class="unit">minutes</div></div>
+</div>
+<div class="section-heading">Dynamic Visualisation</div><div class="chart-wrap"><svg id="cltChart" viewBox="0 0 640 280" role="img" aria-label="Normal sampling distribution of sample means"></svg></div>
+<div class="legend"><span><i class="dot" style="background:#55c6a2"></i>At or below threshold</span><span><i class="dot" style="background:#6e5ae6"></i>Sampling distribution</span></div>
+<div class="explain" id="cltInterpret">—</div>
+</div></div>
+<div class="card" style="margin-top:18px"><div class="section-heading">CLT Explanation</div><h3>How does it work?</h3><p class="note">Imagine repeatedly selecting groups of n orders and calculating each group's average processing time. Those averages form a sampling distribution. As sample size increases, this distribution tends to become approximately Normal under suitable conditions, even when individual processing times are not Normally distributed. This assumes independent observations and a population with finite variance.</p><div class="problem"><b>Important:</b> The CLT describes sample averages, not individual processing times. The displayed probabilities use a Normal approximation for the sample mean.</div></div>
+</section>
+</main>
+<script>
+function showPage(id,btn){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');}
+function erfApprox(x){const sign=x<0?-1:1;x=Math.abs(x);const a1=.254829592,a2=-.284496736,a3=1.421413741,a4=-1.453152027,a5=1.061405429,p=.3275911;const t=1/(1+p*x);return sign*(1-(((((a5*t+a4)*t)+a3)*t+a2)*t+a1)*t*Math.exp(-x*x));}
+function normalCDF(z){return .5*(1+erfApprox(z/Math.sqrt(2)));}
+function fmt(v,d=5){return Number.isFinite(v)?v.toFixed(d):'—';}
+function normalPDF(x,mu,sd){const z=(x-mu)/sd;return Math.exp(-.5*z*z)/(sd*Math.sqrt(2*Math.PI));}
+function calculateNormal(){
+ const mu=+muEl.value,sd=+sdEl.value,lo=+lslEl.value,hi=+uslEl.value,x=+xEl.value,unit=nunit.value,err=document.getElementById('nerror');
+ if(![mu,sd,lo,hi,x].every(Number.isFinite)||sd<=0||lo>=hi){err.textContent='Enter valid finite values. Standard deviation must be greater than 0 and LSL must be less than USL.';['npdf','nz','nwithin','nbelow','nabove','ndefect','nzl','nzu'].forEach(id=>document.getElementById(id).textContent='—');document.getElementById('normalChart').innerHTML='';document.getElementById('ninterpret').textContent='Correct the inputs to view the calculations.';return;}
+ err.textContent='';const zl=(lo-mu)/sd,zu=(hi-mu)/sd,z=(x-mu)/sd,below=normalCDF(zl),within=normalCDF(zu)-below,above=1-normalCDF(zu),def=below+above;
+ document.getElementById('npdf').textContent=fmt(normalPDF(x,mu,sd),6);document.getElementById('npdfunit').textContent='per '+unit;
+ document.getElementById('nz').textContent=fmt(z,4);document.getElementById('nwithin').textContent=(within*100).toFixed(3)+'%';document.getElementById('nbelow').textContent=(below*100).toFixed(3)+'%';document.getElementById('nabove').textContent=(above*100).toFixed(3)+'%';document.getElementById('ndefect').textContent=(def*100).toFixed(3)+'%';document.getElementById('nzl').textContent=fmt(zl,4);document.getElementById('nzu').textContent=fmt(zu,4);
+ const pos=z>0?'above':z<0?'below':'at';document.getElementById('ninterpret').textContent=`The selected diameter is ${Math.abs(z).toFixed(3)} standard deviations ${pos} the mean. About ${(within*100).toFixed(2)}% of components are expected to be within specifications, and ${(def*100).toFixed(2)}% may be outside them (about ${(def*10).toFixed(1)} out of every 1,000 components).`;
+ drawNormal(mu,sd,lo,hi,x,unit);
+}
+function drawNormal(mu,sd,lo,hi,x,unit){
+ const svg=document.getElementById('normalChart'),W=640,H=270,L=48,R=18,T=18,B=42;let a=Math.min(mu-4*sd,lo-1.2*sd),b=Math.max(mu+4*sd,hi+1.2*sd);if(a===b){a-=1;b+=1;}
+ const X=v=>L+(v-a)/(b-a)*(W-L-R),maxY=normalPDF(mu,mu,sd),Y=v=>H-B-(v/maxY)*(H-T-B);
+ let curve='',areaIn='',areaOutL='',areaOutR='';const N=240;
+ for(let i=0;i<=N;i++){const v=a+(b-a)*i/N,px=X(v),py=Y(normalPDF(v,mu,sd));curve+=(i?'L':'M')+px.toFixed(2)+','+py.toFixed(2)+' ';}
+ function area(start,end){let d=`M${X(start)},${Y(0)} `;for(let i=0;i<=N;i++){const v=start+(end-start)*i/N;d+=`L${X(v)},${Y(normalPDF(v,mu,sd))} `;}return d+`L${X(end)},${Y(0)} Z`;}
+ areaOutL=area(a,Math.max(a,Math.min(lo,b)));areaIn=area(Math.max(a,Math.min(lo,b)),Math.max(a,Math.min(hi,b)));areaOutR=area(Math.max(a,Math.min(hi,b)),b);
+ svg.innerHTML=`<line x1="${L}" y1="${H-B}" x2="${W-R}" y2="${H-B}" stroke="#aaa7bd"/><path d="${areaOutL}" fill="#f3a34b" opacity=".5"/><path d="${areaOutR}" fill="#f3a34b" opacity=".5"/><path d="${areaIn}" fill="#36b88b" opacity=".45"/><path d="${curve}" fill="none" stroke="#6255db" stroke-width="3"/> <line x1="${X(lo)}" y1="${T}" x2="${X(lo)}" y2="${H-B}" stroke="#e59a3b" stroke-dasharray="5 4"/><line x1="${X(hi)}" y1="${T}" x2="${X(hi)}" y2="${H-B}" stroke="#e59a3b" stroke-dasharray="5 4"/><line x1="${X(x)}" y1="${T+12}" x2="${X(x)}" y2="${H-B}" stroke="#3988f5" stroke-dasharray="3 4"/><text x="${X(lo)}" y="${H-14}" text-anchor="middle" font-size="12" fill="#9b641d">LSL</text><text x="${X(hi)}" y="${H-14}" text-anchor="middle" font-size="12" fill="#9b641d">USL</text><text x="${X(x)}" y="${T+9}" text-anchor="middle" font-size="11" fill="#3988f5">x</text><text x="${W/2}" y="${H-2}" text-anchor="middle" font-size="11" fill="#777">Diameter (${unit})</text>`;
+}
+const muEl=document.getElementById('mu'),sdEl=document.getElementById('sd'),lslEl=document.getElementById('lsl'),uslEl=document.getElementById('usl'),xEl=document.getElementById('xval');
+['mu','sd','lsl','usl','xval','nunit'].forEach(id=>document.getElementById(id).addEventListener('input',calculateNormal));
+function resetNormal(){muEl.value=50;sdEl.value=2;lslEl.value=46;uslEl.value=54;xEl.value=51;nunit.value='mm';calculateNormal();}
+function calculateExp(){
+ const rate=+document.getElementById('lambda').value,t=+document.getElementById('threshold').value,t1=+document.getElementById('t1').value,t2=+document.getElementById('t2').value,err=document.getElementById('eerror');
+ if(![rate,t,t1,t2].every(Number.isFinite)||rate<=0||t<0||t1<0||t2<t1){err.textContent='Enter a positive arrival rate, non-negative times, and ensure t₂ is greater than or equal to t₁.';['emean','evar','ecdf','esurv','econditional'].forEach(id=>document.getElementById(id).textContent='—');document.getElementById('expChart').innerHTML='';document.getElementById('einterpret').textContent='Correct the inputs to view the calculations.';return;}
+ err.textContent='';const lambda=rate/60,mean=1/lambda,variance=1/(lambda*lambda),cdf=1-Math.exp(-lambda*t),surv=Math.exp(-lambda*t),conditional=Math.exp(-lambda*(t2-t1));
+ document.getElementById('emean').textContent=fmt(mean,4);document.getElementById('evar').textContent=fmt(variance,4);document.getElementById('ecdf').textContent=(cdf*100).toFixed(3)+'%';document.getElementById('esurv').textContent=(surv*100).toFixed(3)+'%';document.getElementById('econditional').textContent=(conditional*100).toFixed(3)+'%';
+ document.getElementById('einterpret').textContent=`At ${rate} requests/minute (λ = ${lambda.toFixed(4)} requests/second), the average gap between requests is ${mean.toFixed(3)} seconds. There is a ${(cdf*100).toFixed(2)}% chance the next request arrives within ${t} seconds, and a ${(surv*100).toFixed(2)}% chance it takes longer. Given no arrival during the first ${t1} seconds, the chance of waiting beyond ${t2} seconds total is ${(conditional*100).toFixed(2)}%.`;
+ drawExp(lambda,t);
+}
+function drawExp(lambda,t){
+ const svg=document.getElementById('expChart'),W=640,H=280,L=48,R=20,T=18,B=42;
+ const end=Math.max(5/lambda,t*1.45,1),peak=lambda,X=v=>L+v/end*(W-L-R),Y=v=>H-B-(v/peak)*(H-T-B),N=220;
+ let curve='';for(let i=0;i<=N;i++){const v=end*i/N,y=lambda*Math.exp(-lambda*v);curve+=(i?'L':'M')+X(v).toFixed(2)+','+Y(y).toFixed(2)+' ';}
+ let shade=`M${X(0)},${Y(0)} `;for(let i=0;i<=N;i++){const v=t*i/N;shade+=`L${X(v)},${Y(lambda*Math.exp(-lambda*v))} `;}shade+=`L${X(t)},${Y(0)} Z`;
+ let tail=`M${X(t)},${Y(0)} `;for(let i=0;i<=N;i++){const v=t+(end-t)*i/N;tail+=`L${X(v)},${Y(lambda*Math.exp(-lambda*v))} `;}tail+=`L${X(end)},${Y(0)} Z`;
+ svg.innerHTML=`<line x1="${L}" y1="${H-B}" x2="${W-R}" y2="${H-B}" stroke="#aaa7bd"/><path d="${shade}" fill="#55c6a2" opacity=".5"/><path d="${tail}" fill="#f0a34a" opacity=".38"/><path d="${curve}" fill="none" stroke="#6e5ae6" stroke-width="3"/><line x1="${X(t)}" y1="${T}" x2="${X(t)}" y2="${H-B}" stroke="#3988f5" stroke-dasharray="5 4"/><text x="${X(t)}" y="${T+12}" text-anchor="middle" font-size="12" fill="#3988f5">t = ${t}s</text><text x="${L}" y="${H-14}" text-anchor="middle" font-size="11" fill="#777">0</text><text x="${W-R}" y="${H-14}" text-anchor="end" font-size="11" fill="#777">${end.toFixed(1)} s</text><text x="${W/2}" y="${H-2}" text-anchor="middle" font-size="11" fill="#777">Inter-arrival time (seconds)</text>`;
+}
+['lambda','threshold','t1','t2'].forEach(id=>document.getElementById(id).addEventListener('input',calculateExp));
+function resetExp(){document.getElementById('lambda').value=12;document.getElementById('threshold').value=5;document.getElementById('t1').value=3;document.getElementById('t2').value=8;calculateExp();}
+function calculateCLT(){
+const mu=+document.getElementById('cltMean').value,sd=+document.getElementById('cltSd').value,n=+document.getElementById('cltN').value,x=+document.getElementById('cltThreshold').value,err=document.getElementById('cltError'),ids=['cltOutMean','cltOutSE','cltOutZ','cltOutProb','cltOutTail','cltOutRange'];
+if(![mu,sd,n,x].every(Number.isFinite)||mu<=0||sd<=0||!Number.isInteger(n)||n<1||n>10000||x<0){err.textContent='Use positive mean and standard deviation, whole-number sample size from 1 to 10,000, and a non-negative threshold.';ids.forEach(id=>document.getElementById(id).textContent='—');document.getElementById('cltChart').innerHTML='';document.getElementById('cltInterpret').textContent='Correct the inputs to view results.';return;}
+err.textContent='';const se=sd/Math.sqrt(n),z=(x-mu)/se,p=normalCDF(z),tail=1-p,lo=mu-1.96*se,hi=mu+1.96*se;
+document.getElementById('cltOutMean').textContent=fmt(mu,3);document.getElementById('cltOutSE').textContent=fmt(se,4);document.getElementById('cltOutZ').textContent=fmt(z,4);document.getElementById('cltOutProb').textContent=(p*100).toFixed(3)+'%';document.getElementById('cltOutTail').textContent=(tail*100).toFixed(3)+'%';document.getElementById('cltOutRange').textContent=lo.toFixed(2)+' – '+hi.toFixed(2);
+document.getElementById('cltInterpret').textContent=`For samples of ${n} orders, the expected sample average is ${mu.toFixed(2)} minutes and the standard error is ${se.toFixed(3)} minutes. The threshold ${x.toFixed(2)} minutes has z = ${z.toFixed(3)}. Approximately ${(p*100).toFixed(2)}% of sample averages are at or below this threshold.`;
+drawCLT(mu,se,x);}
+function drawCLT(mu,se,x){
+const svg=document.getElementById('cltChart'),W=640,H=280,L=48,R=20,T=18,B=42,a=mu-4*se,b=mu+4*se,X=v=>L+(v-a)/(b-a)*(W-L-R),peak=1/(se*Math.sqrt(2*Math.PI)),Y=v=>H-B-(v/peak)*(H-T-B),pdf=v=>Math.exp(-.5*((v-mu)/se)**2)*peak,N=220;let curve='',shade=`M${X(a)},${Y(0)} `;for(let i=0;i<=N;i++){const v=a+(b-a)*i/N;curve+=(i?'L':'M')+X(v).toFixed(2)+','+Y(pdf(v)).toFixed(2)+' ';if(v<=x)shade+=`L${X(v)},${Y(pdf(v))} `;}const cut=Math.max(a,Math.min(b,x));shade+=`L${X(cut)},${Y(0)} Z`;svg.innerHTML=`<line x1="${L}" y1="${H-B}" x2="${W-R}" y2="${H-B}" stroke="#aaa7bd"/><path d="${shade}" fill="#55c6a2" opacity=".48"/><path d="${curve}" fill="none" stroke="#6e5ae6" stroke-width="3"/><line x1="${X(mu)}" y1="${T}" x2="${X(mu)}" y2="${H-B}" stroke="#3988f5" stroke-dasharray="4 4"/><line x1="${X(x)}" y1="${T}" x2="${X(x)}" y2="${H-B}" stroke="#e59a3b" stroke-dasharray="5 4"/><text x="${X(mu)}" y="${T+12}" text-anchor="middle" font-size="12" fill="#3988f5">μ</text><text x="${X(x)}" y="${H-14}" text-anchor="middle" font-size="12" fill="#9b641d">threshold</text><text x="${W/2}" y="${H-2}" text-anchor="middle" font-size="11" fill="#777">Sample mean (minutes)</text>`;}
+function resetCLT(){document.getElementById('cltMean').value=18;document.getElementById('cltSd').value=6;document.getElementById('cltN').value=36;document.getElementById('cltThreshold').value=20;calculateCLT();}
+['cltMean','cltSd','cltN','cltThreshold'].forEach(id=>document.getElementById(id).addEventListener('input',calculateCLT));
+
+calculateNormal();calculateExp();calculateCLT();
+</script>
+</body></html>
